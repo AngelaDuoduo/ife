@@ -9,7 +9,6 @@ function isFunction(fn) {
 function cloneObject(src) {
 	var type = Object.prototype.toString.call(src).match(/\[object\s([a-zA-z]+)\]/)[1],
 		result;
-	console.log(type);
 	switch(type) {
 		case 'Date': 
 			result =  new Date(src.getTime());
@@ -46,15 +45,7 @@ function uniqArray(arr){
 }
 
 function trim(str) {
-	var result = [];
-	for (var i = 0, len = str.length; i < len; i++) {
-		if (str[i] == ' ' || str[i] == '\u3000' || str[i] == '\t'){
-			continue;
-		}
-		result.push(str[i]);
-	}
-	console.log(result);
-	return result.join('');
+	return str.replace(/^[\s\u3000]+|[\s\u3000]+$/g, "");
 }
 
 function each(arr, fn) {

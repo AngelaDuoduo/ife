@@ -274,7 +274,7 @@ function ajax(url, options) {
 			var result = [];
 			for (var key in data) {
 				if (data.hasOwnProperty(key)) {
-					result.push(key + "=" + data[key]);
+					result.push(key + "=" + encodeURIComponent(data[key]));
 				}
 			}
 			return result.join("&");
@@ -283,37 +283,37 @@ function ajax(url, options) {
 				items = data.split("&");
 			for (var i = 0, len = items.length; i < len; i++) {
 				var keyValue = items[i].split("=");
-				result[keyValue[0]] = keyValue[1];
+				result[keyValue[0]] = encodeURIComponent(keyValue[1]);
 			}
 			return result;
 		}
 		return data;
 	};
 
-
+	var options = options || {};
 	options.type = options.type || 'get';
 	options.data = options.data || "";
 
 	var xhr = new XMLHttpRequest();
 
-	xhr.onreadystatuschange = function(event) {
+	xhr.onreadystatechange = function(event) {
 		if (xhr.readyState === 4) {
 			//重定向信息不可以算作成功吗？
-			if (xhr.status >= 200 && xhr.status < 300) {
-				return options.onsuccess && options.onsuccess(xhr.responseText);
+			if (xhr.status >= 200 && xhr.status < 400) {
+				options.onsuccess && options.onsuccess(xhr.responseText);
 			} else {
-				return options.onfail && options.onfail(xhr.responseText, xhr.status);
+				options.onfail && options.onfail(xhr.responseText, xhr.status);
 			}
 		} 
 	};
 
 	if (options.type.toLowerCase() === 'get') {
-		xhr.open("get", url + "?" + formData("get", data));
+		xhr.open("get", url + "?" + formData("get", options.data), options.async);
 		xhr.send(null);
 	} else if (options.type.toLowerCase() === 'post'){
-		xhr.open("post", url);
+		xhr.open("post", url, options.async);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.send(formData("post", data));
+		xhr.send(formData("post", options.data));
 	}
 }
 

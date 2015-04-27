@@ -18,6 +18,7 @@ window.onload = function() {
 		var habits = textarea.value.split(/[\n \u3000,\uff0c;\u3001]+/g);
 		habits = uniqArray(habits);
 		var boxes = document.createDocumentFragment();
+		boxes.appendChild(document.createElement("br"));
 		habits.forEach(function(elem, index) {
 
 			var checkbox = document.createElement("input");
@@ -29,8 +30,9 @@ window.onload = function() {
 			label.setAttribute("for", elem);
 			label.innerText = elem;
 
-			boxes.appendChild(label);
 			boxes.appendChild(checkbox);
+			boxes.appendChild(label);			
+			boxes.appendChild(document.createElement("br"));
 		});
 		parent.appendChild(boxes);
 	});

@@ -2,8 +2,8 @@ function AutoPlay(picsDom) {
 	this.dom = picsDom;
 	this.picsLi = this.dom.getElementsByTagName("ul")[0].getElementsByTagName("li");
 	this.indexes = this.setIndexes(this.dom);
-	this.width = 490;
-	this.height = 170;
+	this.width = parseInt(this.picsLi && this.picsLi[0].offsetWidth, 10) || 490;
+	this.height = parseInt(this.picsLi && this.picsLi[0].offsetHeigt, 10) || 170;
 	this.count = this.indexes.length;
 	this.timer = null;
 	this.autoTimer = null;
@@ -70,14 +70,14 @@ AutoPlay.prototype = {
 			picNum = 0;
 		this.autoTimer = setInterval(function() {
 			if (!that.reverseOrder) {
-				that.currentIndex = that.currentIndex === this.count - 1 ? 0 : that.currentIndex + 1;
+				that.currentIndex = that.currentIndex === that.count - 1 ? 0 : that.currentIndex + 1;
 			} else {
 				that.currentIndex = that.currentIndex === 0 ? that.count - 1 : that.currentIndex - 1;
 			}
 			that.playOnePic(that.currentIndex);
 			that.showIndex(that.currentIndex);
 			picNum++;
-			if (!that.isLoop && picNum === that.count) {
+			if (!that.isLoop && picNum >= that.count) {
 				clearInterval(that.autoTimer);
 			}	
 		}, this.slot);
@@ -86,9 +86,9 @@ AutoPlay.prototype = {
 	playOnePic: function(index) {
 
 		var that = this,
+			speed = 10,
 			start = 0,
-			end = start + this.width,
-			speed = this.width / 10,
+			end = 100,			
 			lastIndex;
 		//如果不是逆序
 		if (!this.reverseOrder) {
@@ -110,17 +110,17 @@ AutoPlay.prototype = {
 			if (start <= end) {
 				//如果不是逆序
 				if (!that.reverseOrder) {
-					that.picsLi[lastIndex].style.left = -start + "px";
-					that.picsLi[index].style.left = end - start + "px";
+					that.picsLi[lastIndex].style.left = -start + "%";
+					that.picsLi[index].style.left = end - start + "%";
 				} else {
-					that.picsLi[lastIndex].style.right = -start + "px";
-					that.picsLi[index].style.right = end - start + "px";
+					that.picsLi[lastIndex].style.right = -start + "%";
+					that.picsLi[index].style.right = end - start + "%";
 				}				
 				start += speed;
 			} else {
 				clearInterval(that.timer);
 			}
-		}, 30);
+		}, 50);
 	},
 	showIndex: function(index) {				
 		for (var i = 0; i < this.count; i++) {

@@ -161,6 +161,10 @@ header{
 	right: 0;
 	top: 60px;
 }
+#edit-tip{
+	color: #f00;
+	font-size: 12px;
+}
 #content-title {
 	height: 60px;
 	background-color: #eee;
